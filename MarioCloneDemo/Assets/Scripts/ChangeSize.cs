@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyController : MonoBehaviour
+public class ChangeSize : MonoBehaviour
 {
-    [SerializeField] float moveSpeed;
-    private Rigidbody2D rb;
     [SerializeField] float speed;
     private float startLocation;
     private float endLocation;
@@ -15,8 +13,6 @@ public class EnemyController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-
         startLocation = transform.position.y;
 
         endLocation = startLocation + distance;
@@ -29,17 +25,19 @@ public class EnemyController : MonoBehaviour
 
         if (transform.position.y >= endLocation)
         {
-            direction = Vector3.right;
+            direction = Vector3.down;
         }
         else if (transform.position.y < startLocation)
         {
-            direction = Vector3.left;
+            direction = Vector3.up;
         }
-        Move();
     }
 
-    private void Move()
+    void OnTriggerStay2D(Collider2D collider)
     {
-        transform.Translate(direction * moveSpeed * Time.deltaTime);
+        if(colider.gameObject.tag == "Player")
+        {
+            transform.scale(0,5,0);
+        }
     }
 }
