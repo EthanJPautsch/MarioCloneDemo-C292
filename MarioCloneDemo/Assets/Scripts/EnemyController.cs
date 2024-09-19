@@ -4,20 +4,16 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    [SerializeField] float moveSpeed;
-    private Rigidbody2D rb;
     [SerializeField] float speed;
     private float startLocation;
     private float endLocation;
     [SerializeField] float distance;
-    private Vector3 direction = Vector3.up;
+    private Vector3 direction = Vector3.left;
 
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-
-        startLocation = transform.position.y;
+        startLocation = transform.position.x;
 
         endLocation = startLocation + distance;
     }
@@ -27,19 +23,13 @@ public class EnemyController : MonoBehaviour
     {
         transform.Translate(direction * speed * Time.deltaTime);
 
-        if (transform.position.y >= endLocation)
+        if (transform.position.x >= endLocation)
         {
             direction = Vector3.right;
         }
-        else if (transform.position.y < startLocation)
+        else if (transform.position.x < startLocation)
         {
             direction = Vector3.left;
         }
-        Move();
-    }
-
-    private void Move()
-    {
-        transform.Translate(direction * moveSpeed * Time.deltaTime);
     }
 }

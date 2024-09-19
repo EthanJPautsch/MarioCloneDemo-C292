@@ -1,12 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] float moveSpeed;
     [SerializeField] float jumpForce;
+    private int jumpCount = 0;
 
     private Rigidbody2D rb;
 
@@ -19,9 +22,10 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && jumpCount < 1)
         {
             Jump();
+            jumpCount += 1;
         }
         Move();
     }
@@ -38,5 +42,16 @@ public class PlayerController : MonoBehaviour
     {
         // (0.1)
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+    }
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == "Ground")
+        {
+            jumpCount = 0;
+            if (collision.gameObject.tag == "KillBox")
+            {
+                Destroy(gameObject);
+            }
+        }
     }
 }
